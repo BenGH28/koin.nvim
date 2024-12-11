@@ -1,7 +1,3 @@
---- type Oink
-local Oink = {}
-Oink.__index = Oink
-
 local default_opts = {
   float = true, -- false to split
   window = {
@@ -14,14 +10,20 @@ local default_opts = {
   }
 }
 
+--- @class Oink
+--- @field new fun(self: Oink, opts: table): Oink
+--- @field show fun(self: Oink, cmd: string)
+--- @field opts table
+local Oink = {}
+
 ---constructor
 ---@param opts table
 ---@return Oink
 function Oink:new(opts)
-  local instance = setmetatable({}, Oink)
-  opts = vim.tbl_extend("force", default_opts, opts)
-  instance.opts = opts
-  return instance
+  opts = vim.tbl_extend("force", default_opts, opts or {})
+  local obj = { opts = opts }
+  obj = setmetatable(obj, { __index = self })
+  return obj
 end
 
 ---show a window with shell command inside of it
@@ -69,7 +71,8 @@ end
 --- @param oink Oink
 local function cmds(oink)
   vim.api.nvim_create_user_command("Oink", function(opts)
-    oink:show(opts.args)
+    local cmd = opts.args
+    oink:show(cmd)
   end, { nargs = 1 })
 end
 
