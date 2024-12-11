@@ -67,22 +67,15 @@ function Oink:show(cmd)
   })
 end
 
---- Create the user commands for Oink.nvim
---- @param oink Oink
-local function cmds(oink)
-  vim.api.nvim_create_user_command("Oink", function(opts)
-    local cmd = opts.args
-    oink:show(cmd)
-  end, { nargs = 1 })
-end
-
-
 M = {}
 
 function M.setup(opts)
   opts = opts or {}
   local oink = Oink:new(opts)
-  cmds(oink)
+  vim.api.nvim_create_user_command("Oink", function(cmd_opts)
+    local cmd = cmd_opts.args
+    oink:show(cmd)
+  end, { nargs = 1 })
 end
 
 return M
