@@ -47,14 +47,12 @@ local show = function(cmd, opts)
   vim.api.nvim_set_current_win(win_id)
   vim.cmd("startinsert")
   vim.fn.termopen(cmd, {
-    on_exit = function()
+    on_exit = function(job, exit_code, event)
+      if exit_code ~= 0 then
+        vim.notify("Unknown command: " .. cmd, vim.log.levels.ERROR)
+      end
       vim.api.nvim_win_close(win_id, true)
       vim.api.nvim_buf_delete(bufnr, { force = true })
-    end,
-    on_stdout = function(id, data, name)
-      if string.match("command not found", data[1]) then
-        vim.notify("unknown command: " .. cmd)
-      end
     end,
   })
 end
