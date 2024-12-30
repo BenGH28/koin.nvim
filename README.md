@@ -4,7 +4,7 @@
 
 Open TUI's in NeoVim with ease
 
-# Installation
+## Installation
 ```lua
 -- lazy.nvim
 return {
@@ -18,7 +18,7 @@ return {
 }
 ```
 
-# Usage
+## Usage
 
 Run a tui application inside of a neovim window
 ```vim
