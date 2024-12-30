@@ -19,7 +19,7 @@ M = {
 ---@param cmd string
 local show = function(cmd, opts)
   if not vim.tbl_contains(M.history, cmd) then
-    table.insert(M.history, cmd)
+    table.insert(M.history, 1, cmd)
   end
 
   local options = vim.tbl_extend("force", default_opts, opts or {})
