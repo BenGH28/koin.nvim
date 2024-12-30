@@ -90,7 +90,7 @@ function M.setup(opts)
     complete = 'shellcmd'
   })
 
-  vim.api.nvim_create_user_command("KoinClear", function(cmd_opts)
+  vim.api.nvim_create_user_command("KoinClear", function()
     M.history = {}
     vim.notify("Koin history cleared")
   end, {})
