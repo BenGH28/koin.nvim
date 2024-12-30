@@ -10,7 +10,7 @@ Open TUI's in NeoVim with ease
 return {
   {
     "BenGH28/koin.nvim",
-    cmd = "Koin",
+    cmd = {"Koin", "KoinLast", "KoinClear"},
     config = function()
       require "koin".setup()
     end
