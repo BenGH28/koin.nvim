@@ -11,13 +11,20 @@ local default_opts = {
 }
 
 
+M = {
+  history = {},
+}
 
 ---show a window with shell command inside of it
 ---@param cmd string
 local show = function(cmd, opts)
+  if not vim.tbl_contains(M.history, cmd) then
+    table.insert(M.history, cmd)
+  end
+
   local options = vim.tbl_extend("force", default_opts, opts or {})
-  local win_height = math.ceil(vim.api.nvim_win_get_height(0) * options.window.size)
-  local win_width = math.ceil(vim.api.nvim_win_get_width(0) * options.window.size)
+  local win_height = math.floor(vim.api.nvim_win_get_height(0) * options.window.size)
+  local win_width = math.floor(vim.api.nvim_win_get_width(0) * options.window.size)
 
   local height = vim.api.nvim_win_get_height(0)
   local width = vim.api.nvim_win_get_width(0)
@@ -57,15 +64,45 @@ local show = function(cmd, opts)
   })
 end
 
-M = {
-  show = show,
-}
+local koin = function(cmd, opts)
+  show(cmd, opts)
+end
+
+local koin_last = function(cmd, opts)
+  if cmd ~= "" then
+    show(cmd, opts)
+  elseif M.history and #M.history > 0 then
+    cmd = M.history[1]
+    show(M.history[1], opts)
+  else
+    vim.notify("koin last command is nil")
+  end
+end
+
+M.show = show
+
 function M.setup(opts)
   opts = vim.tbl_extend("force", default_opts, opts or {})
-  vim.api.nvim_create_user_command("Oink", function(cmd_opts)
-    local cmd = cmd_opts.args
-    show(cmd, opts)
-  end, { nargs = 1 })
+  vim.api.nvim_create_user_command("Koin", function(cmd_opts)
+    koin(cmd_opts.args, opts)
+  end, {
+    nargs = '+',
+    complete = 'shellcmd'
+  })
+
+  vim.api.nvim_create_user_command("KoinClear", function(cmd_opts)
+    M.history = {}
+    vim.notify("Koin history cleared")
+  end, {})
+
+  vim.api.nvim_create_user_command("KoinLast", function(cmd_opts)
+    koin_last(cmd_opts.args, opts)
+  end, {
+    nargs = '*',
+    complete = function()
+      return M.history
+    end
+  })
 end
 
 return M
