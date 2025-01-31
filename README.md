@@ -18,6 +18,7 @@ return {
 }
 ```
 
+
 ## Usage
 
 Run a tui application inside of a neovim window
@@ -34,3 +35,22 @@ Look through your Koin history and run that
 ```
 
 Clear you history with `:KoinClear`
+
+
+## Configure
+
+```lua
+local default_opts = {
+  float = true, -- false to split
+  window = {
+    size = 0.85, -- 0 to 1
+    border = "rounded", -- none| single| double| rounded| solid| shadow
+  },
+  split = {
+    direction = "left", -- left | right | above | below
+    size = 0.5, -- 0 to 1
+  }
+}
+
+require("koin").setup(default_opts)
+```
