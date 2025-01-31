@@ -15,8 +15,10 @@ M = {
   history = {},
 }
 
+
 ---show a window with shell command inside of it
 ---@param cmd string
+---@param opts? table options to configure display of TUI's
 local show = function(cmd, opts)
   if not vim.tbl_contains(M.history, cmd) then
     table.insert(M.history, 1, cmd)
@@ -87,7 +89,7 @@ function M.setup(opts)
     koin(cmd_opts.args, opts)
   end, {
     nargs = '+',
-    complete = 'shellcmd'
+    complete = "shellcmd"
   })
 
   vim.api.nvim_create_user_command("KoinClear", function()
