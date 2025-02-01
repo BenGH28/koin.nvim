@@ -55,7 +55,14 @@ local show = function(cmd, opts)
   local win_id = vim.api.nvim_open_win(bufnr, true, config)
   vim.api.nvim_set_current_win(win_id)
   vim.cmd("startinsert")
-  vim.fn.termopen(cmd, {
+
+  local cmd_list = {}
+  if vim.fn.has("win32") == 1 then
+    cmd_list = { "cmd", "/c", cmd }
+  else
+    cmd_list = { "bash", "-c", cmd }
+  end
+  vim.fn.termopen(cmd_list, {
     on_exit = function(job, exit_code, event)
       if exit_code ~= 0 then
         vim.notify("Unknown command: " .. cmd, vim.log.levels.ERROR)
