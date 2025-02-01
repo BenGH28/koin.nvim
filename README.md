@@ -1,16 +1,11 @@
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/88ed87be-fbc1-4405-9f73-8378635694b2" alt="a gold coin on dark background" style="width:150px;height:auto;"/>
+    <img src="https://github.com/user-attachments/assets/88ed87be-fbc1-4405-9f73-8378635694b2" alt="a gold coin" style="width:150px;height:auto;"/>
+</div>
+<div align=center>
+    <h1>koin.nvim</h1>
+    <h3>Kindly Open In Neovim</h3>
 </div>
 
-<div align=center>
-  <h1>koin.nvim</h1> 
-  <h3>
-    Kindly Open In Neovim
-  </h3>
-  <h4>
-  Open TUI's in Neovim with ease.
-  </h4>
-</div>
 
 
 
