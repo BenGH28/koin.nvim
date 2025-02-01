@@ -54,3 +54,15 @@ local default_opts = {
 
 require("koin").setup(default_opts)
 ```
+
+## API
+
+Use the `show` function to script your own solutions
+
+```lua
+opts = {
+    -- your config here or default_opts
+}
+cmd = "htop"
+require("koin").show(cmd, opts)
+```
