@@ -1,3 +1,6 @@
+M = {}
+History = {}
+
 local default_opts = {
   float = true, -- false to split
   window = {
@@ -10,18 +13,12 @@ local default_opts = {
   }
 }
 
-
-M = {
-  history = {},
-}
-
-
 ---show a window with shell command inside of it
 ---@param cmd string
 ---@param opts? table options to configure display of TUI's
-local show = function(cmd, opts)
-  if not vim.tbl_contains(M.history, cmd) then
-    table.insert(M.history, 1, cmd)
+M.show = function(cmd, opts)
+  if not vim.tbl_contains(History, cmd) then
+    table.insert(History, 1, cmd)
   end
 
   local options = vim.tbl_extend("force", default_opts, opts or {})
@@ -74,33 +71,32 @@ local show = function(cmd, opts)
 end
 
 local koin = function(cmd, opts)
-  show(cmd, opts)
+  M.show(cmd, opts)
 end
 
 local koin_last = function(cmd, opts)
   if cmd ~= "" then
-    show(cmd, opts)
-  elseif M.history and #M.history > 0 then
-    cmd = M.history[1]
-    show(M.history[1], opts)
+    M.show(cmd, opts)
+  elseif History and #History > 0 then
+    cmd = History[1]
+    M.show(History[1], opts)
   else
     vim.notify("koin last command is nil")
   end
 end
 
-M.show = show
 
 function M.setup(opts)
   opts = vim.tbl_extend("force", default_opts, opts or {})
   vim.api.nvim_create_user_command("Koin", function(cmd_opts)
-    koin(cmd_opts.args, opts)
+    M.show(cmd_opts.args, opts)
   end, {
     nargs = '+',
     complete = "shellcmd"
   })
 
   vim.api.nvim_create_user_command("KoinClear", function()
-    M.history = {}
+    History = {}
     vim.notify("Koin history cleared")
   end, {})
 
@@ -109,7 +105,7 @@ function M.setup(opts)
   end, {
     nargs = '*',
     complete = function()
-      return M.history
+      return History
     end
   })
 end
