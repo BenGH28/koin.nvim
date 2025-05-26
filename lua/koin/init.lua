@@ -1,5 +1,5 @@
-M = {}
-History = {}
+local M = {}
+local History = {}
 
 local default_opts = {
   float = true, -- false to split
@@ -70,9 +70,6 @@ M.show = function(cmd, opts)
   })
 end
 
-local koin = function(cmd, opts)
-  M.show(cmd, opts)
-end
 
 local koin_last = function(cmd, opts)
   if cmd ~= "" then
