@@ -71,3 +71,9 @@ opts = {
 cmd = "htop"
 require("koin").show(cmd, opts)
 ```
+
+## Testing
+
+```sh
+nvim --headless -u NONE -i NONE -l tests/koin_test.lua
+```
